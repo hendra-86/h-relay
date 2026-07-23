@@ -1,0 +1,39 @@
+# Node
+node_modules
+.pnpm-store
+
+# Build
+dist
+build
+coverage
+.turbo
+
+# Environment
+.env
+.env.*
+
+!.env.example
+
+# Logs
+logs
+*.log
+
+# IDE
+.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+postgres-data
+redis-data
+
+# Next.js
+.next
+
+# Prisma
+prisma/dev.db
+
+# Temporary
+tmp

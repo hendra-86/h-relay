@@ -1,6 +1,6 @@
 import compression from 'compression';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import { env } from '@h-relay/config';
 import express, { type Express } from 'express';
 import helmet from 'helmet';
 
@@ -13,7 +13,12 @@ import { notFound } from './middleware/not-found.middleware.js';
 import healthRouter from './modules/health/health.route.js';
 import { httpLogger } from '@h-relay/logger';
 
-dotenv.config();
+// dotenv.config();
+logger.info({
+  service: env.SERVICE_NAME,
+  env: env.NODE_ENV,
+  port: env.PORT,
+});
 
 const app: Express = express();
 

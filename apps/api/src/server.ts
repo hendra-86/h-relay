@@ -1,12 +1,11 @@
-import 'dotenv/config';
-
 import app from './app.js';
-import { gracefulShutdown } from './bootstrap/graceful.js';
+import { env } from './config/env.js';
+import { logger } from '@h-relay/logger';
 
-const PORT = Number(process.env.PORT ?? 3000);
-
-const server = app.listen(PORT, () => {
-  console.log(`🚀 H-Relay API running on http://localhost:${PORT}`);
+const server = app.listen(env.PORT, () => {
+  logger.info({
+    service: 'h-relay-api',
+    env: env.NODE_ENV,
+    port: env.PORT,
+  }, `🚀 H-Relay API running on http://localhost:${env.PORT}`);
 });
-
-gracefulShutdown(server);

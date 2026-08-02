@@ -4,12 +4,10 @@ type HealthResponse = {
   status: string;
   service: string;
   version: string;
-  timestamp: string;
 };
 
 type ReadyResponse = {
   status: string;
-  timestamp: string;
   checks: {
     database: string;
     redis: string;
@@ -19,17 +17,9 @@ type ReadyResponse = {
 
 type LiveResponse = {
   status: string;
-  timestamp: string;
 };
 
 export class HealthService {
-  /**
-   * Generate current timestamp
-   */
-  private now(): string {
-    return new Date().toISOString();
-  }
-
   /**
    * Health endpoint
    * Digunakan untuk informasi dasar aplikasi
@@ -39,7 +29,6 @@ export class HealthService {
       status: 'ok',
       service: SERVICE_NAME,
       version: VERSION,
-      timestamp: this.now(),
     };
   }
 
@@ -51,7 +40,6 @@ export class HealthService {
   ready(): ReadyResponse {
     return {
       status: 'ready',
-      timestamp: this.now(),
       checks: {
         database: 'not_configured',
         redis: 'not_configured',
@@ -68,7 +56,6 @@ export class HealthService {
   live(): LiveResponse {
     return {
       status: 'alive',
-      timestamp: this.now(),
     };
   }
 }

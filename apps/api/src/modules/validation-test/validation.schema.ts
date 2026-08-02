@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const DemoSchema = z.object({
+export const ValidationTestSchema = z.object({
   phone: z
     .string()
     .min(10, 'Phone minimal 10 karakter'),

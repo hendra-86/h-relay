@@ -5,26 +5,40 @@ import { success } from '../../shared/responses/success.js';
 
 export class HealthController {
     getHealth: RequestHandler = (req, res) => {
-        res.json({
-            requestId: req.requestId,
-            ...healthService.health(),
-        });
+        return success(
+            res,
+            req.requestId,
+            healthService.health(),
+        );
     };
 
     getReady: RequestHandler = (req, res) => {
-        res.json({
-            requestId: req.requestId,
-            ...healthService.ready(),
-        });
+        return success(
+            res,
+            req.requestId,
+            healthService.ready(),
+        );
         // return success(res, healthService.ready());
     };
 
     getLive: RequestHandler = (req, res) => {
         // return success(res, healthService.live());
-        res.json({
-            requestId: req.requestId,
-            ...healthService.live(),
-        });
+        return success(
+            res,
+            req.requestId,
+            healthService.live(),
+        );
+    };
+
+    validationTest: RequestHandler = (req, res) => {
+        return success(
+            res,
+            req.requestId,
+            {
+                phone: req.body.phone,
+                message: req.body.message,
+            },
+        );
     };
 }
 

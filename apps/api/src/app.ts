@@ -14,6 +14,7 @@ import healthRouter from './modules/health/health.route.js';
 import { httpLogger } from '@h-relay/logger';
 import docsRouter from './routes/docs.route.js';
 import validationRouter from './modules/validation-test/validation.route.js';
+import clientRouter from './modules/client/client.route.js';
 
 // dotenv.config();
 logger.info({
@@ -40,6 +41,8 @@ app.use(API_PREFIX, healthRouter);
 app.use(`${API_PREFIX}/validation-test`, validationRouter);
 
 app.use('/docs', docsRouter);
+
+app.use(`${API_PREFIX}/clients`, clientRouter);
 
 // app.use(API_PREFIX, healthRouter);
 

@@ -3,6 +3,7 @@ import type { RequestHandler } from 'express';
 import { AppError } from '../errors/app-error.js';
 import { ErrorCode } from '../errors/error-code.js';
 import { authConfig } from '../config/auth.config.js';
+import { clientService } from '../modules/client/client.service.js';
 
 export const apiKeyMiddleware: RequestHandler = (
   req,
@@ -11,25 +12,29 @@ export const apiKeyMiddleware: RequestHandler = (
 ) => {
   const apiKey = req.header('x-api-key');
 
-  if (!apiKey) {
+    if (!apiKey) {
     return next(
-      new AppError(
+        new AppError(
         'API key is required',
         401,
         ErrorCode.UNAUTHORIZED,
-      ),
+        ),
     );
-  }
+    }
 
-  if (apiKey !== authConfig.apiKey) {
+    const client = clientService.findByApiKey(apiKey);
+
+    if (!client) {
     return next(
-      new AppError(
+        new AppError(
         'Invalid API key',
         401,
         ErrorCode.UNAUTHORIZED,
-      ),
+        ),
     );
-  }
+    }
 
-  next();
+    req.client = client;
+
+    next();
 };

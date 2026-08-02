@@ -1,12 +1,17 @@
 import { RequestHandler } from 'express';
+import { success } from '../../shared/responses/index.js';
 
 export class ValidationController {
   send: RequestHandler = (req, res) => {
-    res.json({
-      success: true,
-      requestId: req.requestId,
-      data: req.body,
-    });
+    return success(
+    res,
+    req.requestId,
+    {
+        client: req.client?.name,
+        phone: req.body.phone,
+        message: req.body.message,
+    },
+    );
   };
 }
 

@@ -12,6 +12,7 @@ import { errorHandler } from './middleware/error.middleware.js';
 import { notFound } from './middleware/not-found.middleware.js';
 import healthRouter from './modules/health/health.route.js';
 import { httpLogger } from '@h-relay/logger';
+import docsRouter from './routes/docs.route.js';
 
 // dotenv.config();
 logger.info({
@@ -34,6 +35,8 @@ app.use(requestIdMiddleware);
 app.use(httpLogger);
 
 app.use(API_PREFIX, healthRouter);
+
+app.use('/docs', docsRouter);
 
 app.use(notFound);
 app.use(errorHandler);

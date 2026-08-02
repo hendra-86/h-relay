@@ -1,4 +1,6 @@
 // import { Router } from 'express';
+import { AppError } from '../../errors/app-error.js';
+import { ErrorCode } from '../../errors/index.js';
 import { healthController } from './health.controller.js';
 
 import {
@@ -52,6 +54,13 @@ router.get('/ready', healthController.getReady);
 
 router.get('/live', healthController.getLive);
 
+router.get('/error', (_req, _res) => {
+  throw new AppError(
+    'Testing error',
+    400,
+    ErrorCode.BAD_REQUEST,
+  );
+});
 
 
 export default router;

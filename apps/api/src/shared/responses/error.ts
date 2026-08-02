@@ -1,19 +1,19 @@
-import { Response } from 'express';
+import type { Response } from 'express';
 
-export function failure(
+export function error(
   res: Response,
+  status: number,
+  requestId: string | undefined,
   code: string,
   message: string,
-  status = 500,
 ) {
   return res.status(status).json({
     success: false,
+    requestId,
     error: {
       code,
       message,
     },
-    meta: {
-      timestamp: new Date().toISOString(),
-    },
+    timestamp: new Date().toISOString(),
   });
 }

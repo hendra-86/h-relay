@@ -16,6 +16,7 @@ import docsRouter from './routes/docs.route.js';
 import validationRouter from './modules/validation-test/validation.route.js';
 import clientRouter from './modules/client/client.route.js';
 import queueRouter from './modules/queue/queue.route.js';
+import whatsappRouter from './modules/whatsapp/whatsapp.route.js';
 
 // dotenv.config();
 logger.info({
@@ -49,6 +50,11 @@ app.use(`${API_PREFIX}/validation-test`, validationRouter);
 app.use('/docs', docsRouter);
 
 app.use(`${API_PREFIX}/clients`, clientRouter);
+
+app.use(
+  `${API_PREFIX}/whatsapp`,
+  whatsappRouter,
+);
 
 app.use(
   `${API_PREFIX}/queue`,

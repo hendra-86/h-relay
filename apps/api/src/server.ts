@@ -5,7 +5,10 @@ import { logger } from '@h-relay/logger';
 
 import { prisma } from './lib/prisma.js';
 import { redis } from './lib/redis.js';
+import { bullConnection } from './lib/bullmq.js';
+
 import './jobs/index.js';
+// import './jobs/workers/whatsapp.worker.js';
 
 const server = app.listen(env.PORT, () => {
   logger.info(
@@ -31,12 +34,15 @@ async function shutdown(signal: string) {
         await redis.quit();
       }
 
+      if (bullConnection.status !== 'end') {
+        await bullConnection.quit();
+      }
+
       logger.info('Resources disconnected');
 
       process.exit(0);
     } catch (err) {
       logger.error({ err }, 'Shutdown failed');
-
       process.exit(1);
     }
   });

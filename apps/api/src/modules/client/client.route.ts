@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { clientController } from './client.controller.js';
 import { validate } from '../../middleware/validation.middleware.js';
 import { ClientIdSchema } from './client.schema.js';
-
+console.log("LOADED client.route");
 const router = Router();
 
 /**

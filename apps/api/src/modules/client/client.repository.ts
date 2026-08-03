@@ -1,21 +1,26 @@
-import { clients } from './clients.js';
+import { prisma } from '../../lib/prisma.js';
 import type { Client } from './client.types.js';
 
 export class ClientRepository {
-  findAll(): Client[] {
-    return clients;
+  async findAll(): Promise<Client[]> {
+    return prisma.client.findMany();
   }
 
-  findById(id: string): Client | undefined {
-    return clients.find((client) => client.id === id);
+  async findById(id: string): Promise<Client | null> {
+    return prisma.client.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
-  findByApiKey(apiKey: string): Client | undefined {
-    return clients.find(
-      (client) =>
-        client.apiKey === apiKey &&
-        client.active,
-    );
+  async findByApiKey(apiKey: string): Promise<Client | null> {
+    return prisma.client.findFirst({
+      where: {
+        apiKey,
+        active: true,
+      },
+    });
   }
 }
 

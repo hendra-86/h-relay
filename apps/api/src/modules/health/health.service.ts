@@ -1,5 +1,6 @@
-import { prisma } from '../../lib/prisma.js';
 import { SERVICE_NAME, VERSION } from '../../config/constants.js';
+import { prisma } from '../../lib/prisma.js';
+import { ensureRedisConnection } from '../../lib/redis.js';
 
 type HealthResponse = {
   status: string;
@@ -7,12 +8,14 @@ type HealthResponse = {
   version: string;
 };
 
+type CheckStatus = 'ok' | 'error' | 'not_configured';
+
 type ReadyResponse = {
-  status: string;
+  status: 'ready' | 'not_ready';
   checks: {
-    database: string;
-    redis: string;
-    worker: string;
+    database: CheckStatus;
+    redis: CheckStatus;
+    worker: CheckStatus;
   };
 };
 
@@ -21,6 +24,10 @@ type LiveResponse = {
 };
 
 export class HealthService {
+  /**
+   * Health endpoint
+   * Informasi dasar aplikasi.
+   */
   health(): HealthResponse {
     return {
       status: 'ok',
@@ -29,30 +36,59 @@ export class HealthService {
     };
   }
 
-  async ready(): Promise<ReadyResponse> {
+  /**
+   * Mengecek koneksi database.
+   */
+  private async checkDatabase(): Promise<CheckStatus> {
     try {
       await prisma.$queryRaw`SELECT 1`;
-
-      return {
-        status: 'ready',
-        checks: {
-          database: 'ok',
-          redis: 'not_configured',
-          worker: 'not_configured',
-        },
-      };
+      return 'ok';
     } catch {
-      return {
-        status: 'not_ready',
-        checks: {
-          database: 'error',
-          redis: 'not_configured',
-          worker: 'not_configured',
-        },
-      };
+      return 'error';
     }
   }
 
+  /**
+   * Mengecek koneksi Redis.
+   */
+  private async checkRedis(): Promise<CheckStatus> {
+    try {
+      const redis = await ensureRedisConnection();
+
+      await redis.ping();
+
+      return 'ok';
+    } catch {
+      return 'error';
+    }
+  }
+
+  /**
+   * Readiness endpoint.
+   * Digunakan Kubernetes untuk memastikan dependency siap digunakan.
+   */
+  async ready(): Promise<ReadyResponse> {
+    const checks = {
+      database: await this.checkDatabase(),
+      redis: await this.checkRedis(),
+      worker: 'not_configured' as const,
+    };
+
+    const status: ReadyResponse['status'] =
+      checks.database === 'ok' && checks.redis === 'ok'
+        ? 'ready'
+        : 'not_ready';
+
+    return {
+      status,
+      checks,
+    };
+  }
+
+  /**
+   * Liveness endpoint.
+   * Digunakan Kubernetes untuk memastikan proses Node.js masih hidup.
+   */
   live(): LiveResponse {
     return {
       status: 'alive',

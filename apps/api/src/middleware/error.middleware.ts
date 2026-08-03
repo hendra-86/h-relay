@@ -11,7 +11,6 @@ export const errorHandler: ErrorRequestHandler = (
   err,
   req,
   res,
-  _next,
 ) => {
   logger.error(
     {

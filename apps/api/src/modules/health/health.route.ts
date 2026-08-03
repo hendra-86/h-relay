@@ -58,7 +58,7 @@ router.get('/ready', healthController.getReady);
 
 router.get('/live', healthController.getLive);
 
-router.get('/error', (_req, _res) => {
+router.get('/error', () => {
   throw new AppError(
     'Testing error',
     400,

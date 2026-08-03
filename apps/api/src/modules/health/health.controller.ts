@@ -12,13 +12,14 @@ export class HealthController {
         );
     };
 
-    getReady: RequestHandler = (req, res) => {
-        return success(
-            res,
-            req.requestId,
-            healthService.ready(),
-        );
-        // return success(res, healthService.ready());
+    getReady: RequestHandler = async (req, res) => {
+        const result = await healthService.ready();
+
+            return success(
+                res,
+                req.requestId,
+                result,
+            );
     };
 
     getLive: RequestHandler = (req, res) => {

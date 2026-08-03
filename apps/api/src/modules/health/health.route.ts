@@ -2,9 +2,9 @@
 import { AppError } from '../../errors/app-error.js';
 import { ErrorCode } from '../../errors/index.js';
 import { healthController } from './health.controller.js';
-import { validate } from '../../middleware/validation.middleware.js';
-import { ValidationTestSchema } from '../validation-test/validation.schema.js';
-import { apiKeyMiddleware } from '../../middleware/api-key.middleware.js';
+// import { validate } from '../../middleware/validation.middleware.js';
+// import { ValidationTestSchema } from '../validation-test/validation.schema.js';
+// import { apiKeyMiddleware } from '../../middleware/api-key.middleware.js';
 
 
 import {
@@ -66,14 +66,14 @@ router.get('/error', (_req, _res) => {
   );
 });
 
-router.post(
-  '/validation-test',
-  apiKeyMiddleware,
-  validate({
-    body: ValidationTestSchema,
-  }),
-  healthController.validationTest,
-);
+// router.post(
+//   '/validation-test',
+//   apiKeyMiddleware,
+//   validate({
+//     body: ValidationTestSchema,
+//   }),
+//   healthController.validationTest,
+// );
 
 
 export default router;

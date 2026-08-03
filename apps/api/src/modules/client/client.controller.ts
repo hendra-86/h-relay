@@ -1,34 +1,36 @@
 import type { RequestHandler } from 'express';
 
 import { clientService } from './client.service.js';
+import { toClientResponse } from './client.mapper.js';
 import { success } from '../../shared/responses/success.js';
 import { AppError } from '../../errors/app-error.js';
 import { ErrorCode } from '../../errors/error-code.js';
-import { toClientResponse } from './client.mapper.js';
 
 export class ClientController {
-  getAll: RequestHandler = (req, res) => {
+  getAll: RequestHandler = async (req, res) => {
+    const clients = await clientService.findAll();
+
     return success(
       res,
       req.requestId,
-      clientService.findAll().map(toClientResponse)
+      clients.map(toClientResponse),
     );
   };
 
-  getById: RequestHandler = (req, res, next) => {
+  getById: RequestHandler = async (req, res, next) => {
     const { id } = req.params;
 
     if (!id || Array.isArray(id)) {
-    return next(
+      return next(
         new AppError(
-        'Invalid client id',
-        400,
-        ErrorCode.BAD_REQUEST,
+          'Invalid client id',
+          400,
+          ErrorCode.BAD_REQUEST,
         ),
-    );
+      );
     }
 
-    const client = clientService.findById(id);
+    const client = await clientService.findById(id);
 
     if (!client) {
       return next(

@@ -1,16 +1,16 @@
 import { clientRepository } from './client.repository.js';
 
 export class ClientService {
-  findByApiKey(apiKey: string) {
-    return clientRepository.findByApiKey(apiKey);
+  async findByApiKey(apiKey: string) {
+    return await clientRepository.findByApiKey(apiKey);
   }
 
-  findAll() {
-    return clientRepository.findAll();
+  async findAll() {
+    return await clientRepository.findAll();
   }
 
-  findById(id: string) {
-    return clientRepository.findById(id);
+  async findById(id: string) {
+    return await clientRepository.findById(id);
   }
 }
 

@@ -1,3 +1,4 @@
+import { prisma } from '../../lib/prisma.js';
 import { SERVICE_NAME, VERSION } from '../../config/constants.js';
 
 type HealthResponse = {
@@ -20,10 +21,6 @@ type LiveResponse = {
 };
 
 export class HealthService {
-  /**
-   * Health endpoint
-   * Digunakan untuk informasi dasar aplikasi
-   */
   health(): HealthResponse {
     return {
       status: 'ok',
@@ -32,27 +29,30 @@ export class HealthService {
     };
   }
 
-  /**
-   * Readiness endpoint
-   * Nantinya akan mengecek Redis, PostgreSQL,
-   * Queue, WhatsApp Session, dsb.
-   */
-  ready(): ReadyResponse {
-    return {
-      status: 'ready',
-      checks: {
-        database: 'not_configured',
-        redis: 'not_configured',
-        worker: 'not_configured',
-      },
-    };
+  async ready(): Promise<ReadyResponse> {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+
+      return {
+        status: 'ready',
+        checks: {
+          database: 'ok',
+          redis: 'not_configured',
+          worker: 'not_configured',
+        },
+      };
+    } catch {
+      return {
+        status: 'not_ready',
+        checks: {
+          database: 'error',
+          redis: 'not_configured',
+          worker: 'not_configured',
+        },
+      };
+    }
   }
 
-  /**
-   * Liveness endpoint
-   * Digunakan Kubernetes untuk memastikan
-   * proses Node.js masih hidup.
-   */
   live(): LiveResponse {
     return {
       status: 'alive',

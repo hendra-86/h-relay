@@ -1,0 +1,18 @@
+2026/08/03-20:28:27.898 112db98 Reusing MANIFEST /Users/user/Documents/project-monitoring/h-relay/apps/api/.wwebjs_auth/session-h-relay/Default/Local Storage/leveldb/MANIFEST-000001
+2026/08/03-20:28:27.904 112db98 Recovering log #3
+2026/08/03-20:28:27.912 112db98 Reusing old log /Users/user/Documents/project-monitoring/h-relay/apps/api/.wwebjs_auth/session-h-relay/Default/Local Storage/leveldb/000003.log 
+2026/08/03-20:28:43.009 112db9b Level-0 table #5: started
+2026/08/03-20:28:43.012 112db9b Level-0 table #5: 19637 bytes OK
+2026/08/03-20:28:43.016 112db9b Delete type=0 #3
+2026/08/03-21:37:44.472 112db9b Level-0 table #7: started
+2026/08/03-21:37:44.493 112db9b Level-0 table #7: 13977 bytes OK
+2026/08/03-21:37:44.497 112db9b Delete type=0 #4
+2026/08/03-22:39:14.059 112db98 Level-0 table #9: started
+2026/08/03-22:39:14.064 112db98 Level-0 table #9: 14011 bytes OK
+2026/08/03-22:39:14.067 112db98 Delete type=0 #6
+2026/08/04-00:03:49.510 112db9b Level-0 table #11: started
+2026/08/04-00:03:49.513 112db9b Level-0 table #11: 14238 bytes OK
+2026/08/04-00:03:49.519 112db9b Delete type=0 #8
+2026/08/04-01:15:17.493 112db9b Level-0 table #13: started
+2026/08/04-01:15:17.518 112db9b Level-0 table #13: 14265 bytes OK
+2026/08/04-01:15:17.525 112db9b Delete type=0 #10

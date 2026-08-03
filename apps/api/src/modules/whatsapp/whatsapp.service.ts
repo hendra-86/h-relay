@@ -1,13 +1,14 @@
 import { enqueueWhatsapp } from '../../jobs/queues/whatsapp.queue.js';
-
-import type { WhatsappSendDto } from './whatsapp.schema.js';
+import { ProviderFactory } from './providers/index.js';
 
 export class WhatsappService {
-  async send(data: WhatsappSendDto) {
+  async queue(
+    phone: string,
+    message: string,
+  ) {
     const job = await enqueueWhatsapp({
-      phone: data.phone,
-      message: data.message,
-      priority: data.priority,
+      phone,
+      message,
     });
 
     return {
@@ -15,7 +16,18 @@ export class WhatsappService {
       jobId: job.id,
     };
   }
+
+  async send(
+    phone: string,
+    message: string,
+  ) {
+    const provider = ProviderFactory.getProvider();
+
+    await provider.sendMessage({
+      phone,
+      message,
+    });
+  }
 }
 
-export const whatsappService =
-  new WhatsappService();
+export const whatsappService = new WhatsappService();

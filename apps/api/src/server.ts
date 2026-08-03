@@ -5,6 +5,7 @@ import { logger } from '@h-relay/logger';
 
 import { prisma } from './lib/prisma.js';
 import { redis } from './lib/redis.js';
+import './jobs/index.js';
 
 const server = app.listen(env.PORT, () => {
   logger.info(

@@ -6,9 +6,11 @@ import { logger } from '@h-relay/logger';
 import { prisma } from './lib/prisma.js';
 import { redis } from './lib/redis.js';
 import { bullConnection } from './lib/bullmq.js';
+import { WhatsappClient } from './modules/whatsapp/client/whatsapp.client.js';
 
 import './jobs/index.js';
 // import './jobs/workers/whatsapp.worker.js';
+await WhatsappClient.initialize();
 
 const server = app.listen(env.PORT, () => {
   logger.info(
@@ -29,6 +31,8 @@ async function shutdown(signal: string) {
 
     try {
       await prisma.$disconnect();
+
+      await WhatsappClient.destroy();
 
       if (redis.status !== 'end') {
         await redis.quit();

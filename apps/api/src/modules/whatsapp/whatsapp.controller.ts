@@ -10,7 +10,10 @@ export class WhatsappController {
     res,
   ) => {
     const result =
-      await whatsappService.send(req.body);
+      await whatsappService.queue(
+        req.body.phone,
+        req.body.message,
+      );
 
     return success(
       res,

@@ -1,7 +1,8 @@
-import { logger } from '@h-relay/logger';
-
 import type { Job } from 'bullmq';
 
+import { logger } from '@h-relay/logger';
+
+import { whatsappService } from '../../modules/whatsapp/whatsapp.service.js';
 import type { WhatsappJob } from '../types/whatsapp-job.js';
 
 export async function whatsappProcessor(
@@ -11,21 +12,12 @@ export async function whatsappProcessor(
     {
       id: job.id,
       phone: job.data.phone,
-      message: job.data.message,
     },
     'Processing WhatsApp job',
   );
 
-  /**
-   * Nanti di sini akan memanggil provider
-   *
-   * await whatsappProvider.send(...)
-   */
-
-  logger.info(
-    {
-      id: job.id,
-    },
-    'WhatsApp job completed',
+  await whatsappService.send(
+    job.data.phone,
+    job.data.message,
   );
 }

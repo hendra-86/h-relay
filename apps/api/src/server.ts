@@ -9,7 +9,8 @@ console.log(listEndpoints(app));
 console.log("SERVER RELOADED", Date.now());
 
 
-const server = app.listen(env.PORT, () => {
+// const server = 
+app.listen(env.PORT, () => {
   logger.info({
     service: 'h-relay-api',
     env: env.NODE_ENV,
